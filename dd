@@ -1,0 +1,8 @@
+/bin/sh -c "
+      rootStorage=${PGADMIN_DEFAULT_EMAIL/@/_};
+      cd /var/lib/pgadmin/storage/;
+      mkdir -p ${rootStorage};
+      cp -f /pgadmin4/pgpass ${rootStorage};
+      chmod 600 ${rootStorage}/pgpass;
+      /entrypoint.sh;
+      "

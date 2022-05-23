@@ -1,0 +1,32 @@
+services:
+  postgres:
+    image: postgres:alpine
+    environment:
+      POSTGRES_DB: IpTvPlaylist
+      POSTGRES_USER: IpTvPlaylist_user
+      POSTGRES_PASSWORD: IpTvPlaylist_pass
+    ports:
+      - 5432:5432
+
+
+  pgadmin:
+    restart: always
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin-desktop
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin@sample.dev
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+    ports:
+      - 5050:80
+    volumes:
+      - ./pgadmin/servers-desktop.json:/pgadmin4/servers.json
+      - ./pgadmin/pgpass:/pgadmin4/pgpass
+    entrypoint: >
+      /bin/sh -c "
+      cp -f /pgadmin4/pgpass /var/lib/pgadmin/;
+      chmod 600 /var/lib/pgadmin/pgpass;
+      chown pgadmin:pgadmin /var/lib/pgadmin/pgpass;
+      /entrypoint.sh
+      "
